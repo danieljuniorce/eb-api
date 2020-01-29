@@ -51,3 +51,17 @@ Route.resource("/block", "BlockController")
 Route.resource("/relatorio", "RelatorioController")
   .apiOnly()
   .middleware("auth");
+
+/**
+ * Routes BatePonto
+ */
+Route.resource("/bate-ponto", "BatePontoController")
+  .apiOnly()
+  .middleware("auth");
+
+/**
+ * Routes Atestado
+ */
+Route.resource("/atestado", "AtestadoController")
+  .apiOnly()
+  .middleware("auth");

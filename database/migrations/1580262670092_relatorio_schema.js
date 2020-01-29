@@ -11,6 +11,7 @@ class RelatorioSchema extends Schema {
       table.intenger("relatado").notNullable();
       table.string("observacao", 254).notNullable();
       table.boolean("status").defaultTo(false);
+      table.boolean("edit").defaultTo(false);
       table.timestamps();
     });
   }
