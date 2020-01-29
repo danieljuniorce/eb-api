@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -7,6 +7,8 @@
 /**
  * Resourceful controller for interacting with atestados
  */
+const Atestado = use("App/Models/Atestado");
+
 class AtestadoController {
   /**
    * Show a list of all atestados.
@@ -17,19 +19,8 @@ class AtestadoController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-  }
-
-  /**
-   * Render a form to be used for creating a new atestado.
-   * GET atestados/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async index({ request, response, view }) {
+    return await Atestado.all();
   }
 
   /**
@@ -40,7 +31,12 @@ class AtestadoController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store({ request, response }) {
+    const { solicitante, motivo, tempo } = request.all();
+
+    const atestado = await Atestado.create({ solicitante, motivo, tempo });
+
+    return atestado;
   }
 
   /**
@@ -52,19 +48,12 @@ class AtestadoController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  async show({ params, request, response, view }) {
+    const { id } = params;
 
-  /**
-   * Render a form to update an existing atestado.
-   * GET atestados/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+    const atestado = await Atestado.findBy("id", id);
+
+    return atestado;
   }
 
   /**
@@ -75,7 +64,20 @@ class AtestadoController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response }) {
+    const atestado = await Atestado.findBy("id", params.id);
+
+    const all = request.all();
+    atestado.merge(all);
+
+    try {
+      await atestado.save();
+      return atestado;
+    } catch (err) {
+      return {
+        message: "Erro atualizar o relatório"
+      };
+    }
   }
 
   /**
@@ -86,8 +88,12 @@ class AtestadoController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, request, response }) {
+    const { id } = params;
+    const atestado = await Atestado.find(id);
+
+    await atestado.delete();
   }
 }
 
-module.exports = AtestadoController
+module.exports = AtestadoController;

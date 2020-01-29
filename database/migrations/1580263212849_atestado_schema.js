@@ -7,10 +7,10 @@ class AtestadoSchema extends Schema {
   up() {
     this.create("atestados", table => {
       table.increments();
-      table.intenger("solicitante").notNullable();
+      table.integer("solicitante").notNullable();
       table.string("motivo", 254).notNullable();
       table.string("tempo", 254).notNullable();
-      table.intenger("visto").nullable();
+      table.integer("visto").nullable();
       table.boolean("status").nullable();
       table.timestamps();
     });
